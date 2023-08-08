@@ -40,7 +40,7 @@ exports.createPost = async (req,res) => {
 exports.deletePost = async (req,res) => {
 
     try {
-        const userId = req.query.userId;
+        
         
         const post = await Post.findById(req.params.id);
         
@@ -52,7 +52,7 @@ exports.deletePost = async (req,res) => {
                 message: " Post not found ",
             });
         }
-        if(post.owner.toString() !== req.query.userId.toString()){
+        if(post.owner.toString() !== req.user._id.toString()){
             return res.status(401).json({
                 success: false,
                 message: " Unauthorized ",
@@ -62,7 +62,7 @@ exports.deletePost = async (req,res) => {
         await Post.deleteOne(post);
 
 
-        const user = await User.findById(req.query.userId);
+        const user = await User.findById(req.user._id);
         const index = user.posts.indexOf(req.params.id);
         user.posts.splice(index, 1);
         await user.save();

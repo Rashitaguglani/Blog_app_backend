@@ -11,6 +11,10 @@ router.route("/post/:id").get(isAuthenticated, likeAndUnlikePost);
 
 router.route("/post/:id").put(isAuthenticated, updateCaption);
 
+router.route("/post/:id").delete(isAuthenticated, deletePost);
+
+
+
 
 router.route("/posts").get(isAuthenticated, getPostOfFollowing);
 
