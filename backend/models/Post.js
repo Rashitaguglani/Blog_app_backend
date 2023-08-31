@@ -34,7 +34,14 @@ const postSchema = new mongoose.Schema({
             comment:{
                 type: String,
                 required: true,
-            }
+            },
+        },
+    ],
+
+    tags: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
         },
     ],
 

@@ -5,7 +5,7 @@ const Post = require("../models/Post");
 exports.register = async (req, res) => {
 
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, role } = req.body;
 
         let user = await User.findOne({ email });
         if (user) {
@@ -19,6 +19,7 @@ exports.register = async (req, res) => {
             email,
             password,
             avatar: { public_id: "sample_id", url: "sampleurl" },
+            role: role || "user",
         });
 
 
@@ -384,4 +385,65 @@ exports.getAllUsers = async(req,res) =>{
             message: error.message,
         });
     }
-};
+}; 
+
+/*exports.forgotPassword = async(req,res)=> {
+    try {
+
+        const user= await User.findOne({email:req.body.email});
+
+        if(!user){
+            return res.status(400).json({
+                success:false,
+                message:"User not found",
+            });
+        }
+
+        const resetPasswordToken = user.getResetPasswordToken();
+
+        await user.save();
+
+        const resetUrl = `${req.protocol}://${req.get("host")}/api/v1/password/reset/${resetPasswordToken}`;
+
+        const message= `Reset your Password by clicking on the link below : \n\n ${resetUrl}`;
+
+        try {
+
+            await sendEmail({
+                email: user.email,
+                subject:"Reset Password",
+                message,
+            });
+
+            res.status(200).json({
+                success: true,
+                message: `Email sent to ${user.email}`,
+            });
+            
+        } catch (error) {
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpire = undefined;
+
+            await user.save();
+            res.status(500).json({
+                success: false,
+                message: error.message,
+            });
+        }
+        } catch(error){
+
+            res.status(500).json({
+                success: false,
+                message: error.message,
+            });
+        }
+            
+        };*/
+
+
+
+
+
+
+
+
